@@ -47,25 +47,23 @@ jobs:
       - name: Run e2e tests
         run: yarn test:e2e
 
-  # quality:
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+  quality:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  #     - name: SonarCloud Scan
-  #       uses: SonarSource/sonarcloud-github-action@v2
-  #       with:
-  #         projectBaseDir: gateway
-  #       env:
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [unit_and_integration, e2e]
+    needs: [unit_and_integration, e2e, quality]
     if: github.event_name == 'push'
     steps:
       - name: Checkout
