@@ -65,7 +65,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    #needs: [unit_and_integration, e2e, quality]
     needs: [unit_and_integration, e2e]
     if: github.event_name == 'push'
     steps:
@@ -88,12 +87,24 @@ jobs:
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
           "APP_VERSION=${{ env.APP_VERSION }} bash -s" << 'EOF'
+            set -e  # Detener el script si hay algún error
             cd ${{ secrets.APP_PATH }}
+            
+            echo "--- Bajando cambios de Git ---"
             git pull origin master
-            npm install
-            npm run build
-            APP_VERSION=$APP_VERSION pm2 restart nest-api --update-env --node-args="-r newrelic" || \
-            APP_VERSION=$APP_VERSION pm2 start dist/main.js --name nest-api --node-args="-r newrelic"
+            
+            echo "--- Instalando dependencias (Modo Ahorro RAM) ---"
+            NODE_OPTIONS="--max-old-space-size=512" npm install --no-audit --no-fund
+            
+            echo "--- Generando el Build ---"
+            NODE_OPTIONS="--max-old-space-size=512" npm run build
+            
+            echo "--- Reiniciando Aplicación con PM2 ---"
+            # Limitamos la RAM también en ejecución para evitar futuros cuelgues
+            APP_VERSION=$APP_VERSION pm2 restart nest-api --update-env --node-args="-r newrelic --max-old-space-size=450" || \
+            APP_VERSION=$APP_VERSION pm2 start dist/main.js --name nest-api --node-args="-r newrelic --max-old-space-size=450"
+            
+            echo "--- Deploy Finalizado con éxito ---"
           EOF
 
 #Fix for dont install devDependencies or build in another part
