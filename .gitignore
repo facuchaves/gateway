@@ -32,3 +32,14 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+#env
+.env
+ 
+# Certificates / secrets
+*.key
+*.cert
+*.pem
+
+# CI / test artifacts
+# VER ESTO junit.xml
