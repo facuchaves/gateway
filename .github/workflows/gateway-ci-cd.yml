@@ -1,0 +1,109 @@
+name: Gateway CI-CD
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "gateway/**"
+  pull_request:
+    branches: [master]
+    paths:
+      - "gateway/**"
+
+jobs:
+  unit_and_integration:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gateway
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: yarn
+          cache-dependency-path: gateway/yarn.lock
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test --coverage
+  e2e:
+    runs-on: ubuntu-latest
+    needs: unit_and_integration
+    defaults:
+      run:
+        working-directory: gateway
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: yarn
+          cache-dependency-path: gateway/yarn.lock
+
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+
+      - name: Run e2e tests
+        run: yarn test:e2e
+
+  # quality:
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@v2
+  #       with:
+  #         projectBaseDir: gateway
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    #needs: [unit_and_integration, e2e, quality]
+    needs: [unit_and_integration, e2e]
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set app version
+        shell: bash
+        run: |
+          echo "APP_VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY_GATEWAY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST_GATEWAY }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST_GATEWAY }} \
+          "APP_VERSION=${{ env.APP_VERSION }} bash -s" << 'EOF'
+            cd ${{ secrets.APP_PATH_GATEWAY }}
+            git pull origin master
+            npm install
+            npm run build
+            APP_VERSION=$APP_VERSION pm2 restart nest-api --update-env --node-args="-r newrelic" || \
+            APP_VERSION=$APP_VERSION pm2 start dist/main.js --name nest-api --node-args="-r newrelic"
+          EOF
+
+#Fix for dont install devDependencies or build in another part

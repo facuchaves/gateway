@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="16" failures="0" errors="0" time="10.519">
+  <testsuite name="Filter pipe" errors="0" failures="0" skipped="0" timestamp="2021-12-03T22:54:37" time="2.985" tests="3">
+    <testcase classname="Filter pipe Happy paths adult filter" name="Filter pipe Happy paths adult filter" time="0.004">
+    </testcase>
+    <testcase classname="Filter pipe Happy paths child filter" name="Filter pipe Happy paths child filter" time="0">
+    </testcase>
+    <testcase classname="Filter pipe Error paths min age greater than max age" name="Filter pipe Error paths min age greater than max age" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="User middleware" errors="0" failures="0" skipped="0" timestamp="2021-12-03T22:54:37" time="3.025" tests="3">
+    <testcase classname="User middleware Happy paths fill req" name="User middleware Happy paths fill req" time="0.022">
+    </testcase>
+    <testcase classname="User middleware Happy paths fill res" name="User middleware Happy paths fill res" time="0.001">
+    </testcase>
+    <testcase classname="User middleware Happy paths call nest()" name="User middleware Happy paths call nest()" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="User middleware" errors="0" failures="0" skipped="0" timestamp="2021-12-03T22:54:37" time="3.823" tests="4">
+    <testcase classname="User middleware Happy paths shoud acept user with admin rol" name="User middleware Happy paths shoud acept user with admin rol" time="0.004">
+    </testcase>
+    <testcase classname="User middleware Happy paths shoud deny user with another rol" name="User middleware Happy paths shoud deny user with another rol" time="0.001">
+    </testcase>
+    <testcase classname="User middleware Happy paths shoud deny user without rol" name="User middleware Happy paths shoud deny user without rol" time="0">
+    </testcase>
+    <testcase classname="User middleware Happy paths shoud accept user without rol" name="User middleware Happy paths shoud accept user without rol" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Entity service" errors="0" failures="0" skipped="0" timestamp="2021-12-03T22:54:37" time="4.005" tests="5">
+    <testcase classname="Entity service Happy paths should return all entities" name="Entity service Happy paths should return all entities" time="0.005">
+    </testcase>
+    <testcase classname="Entity service Happy paths should return specific entities" name="Entity service Happy paths should return specific entities" time="0.002">
+    </testcase>
+    <testcase classname="Entity service Happy paths should create new entity" name="Entity service Happy paths should create new entity" time="0.01">
+    </testcase>
+    <testcase classname="Entity service Happy paths should update entity" name="Entity service Happy paths should update entity" time="0">
+    </testcase>
+    <testcase classname="Entity service Happy paths should delete entity" name="Entity service Happy paths should delete entity" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Entity controller" errors="0" failures="0" skipped="0" timestamp="2021-12-03T22:54:37" time="6.776" tests="1">
+    <testcase classname="Entity controller Happy paths /GET resources: should retunr all resources" name="Entity controller Happy paths /GET resources: should retunr all resources" time="0.027">
+    </testcase>
+  </testsuite>
+</testsuites>

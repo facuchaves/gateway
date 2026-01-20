@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+  build:
+    commands:
+      - cd gateway
+      - yarn
+      - yarn build
+artifacts:
+  files:
+    - "**/*"
