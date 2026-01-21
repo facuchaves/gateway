@@ -103,6 +103,9 @@ jobs:
             set -e  # Detener el script si hay algún error
             cd ${{ secrets.APP_PATH }}
             
+            echo "--- Exportando secrets ---"
+            export NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }}
+            
             echo "--- Bajando cambios de Git ---"
             git pull origin master
             
