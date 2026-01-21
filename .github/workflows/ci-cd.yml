@@ -95,8 +95,6 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to EC2
-        env:
-          NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
           "APP_VERSION=${{ env.APP_VERSION }} bash -s" << 'EOF'
@@ -105,7 +103,8 @@ jobs:
             
             echo "--- Exportando secrets ---"
             export NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }}
-            
+            echo "NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY"
+
             echo "--- Bajando cambios de Git ---"
             git pull origin master
             
