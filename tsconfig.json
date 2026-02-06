@@ -20,7 +20,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["jest","node"],
     "typeRoots": ["./node_modules/@types"]
   },
   "include": ["src/**/*"],
