@@ -1,4 +1,5 @@
-import { CacheModule, Logger, Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { EntityController } from './entity.controller';
 import { EntityService } from './entity.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';

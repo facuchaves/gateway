@@ -1,8 +1,5 @@
 import {
   Body,
-  CacheInterceptor,
-  CacheKey,
-  CacheTTL,
   Controller,
   Delete,
   Get,
@@ -20,6 +17,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import {
   ApiBadRequestResponse,
   ApiBody,
