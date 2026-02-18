@@ -31,7 +31,7 @@ async function bootstrap() {
     .setDescription(
       'This is a litlle but very complete CRUDX for an generic entity.',
     )
-    .setVersion('1.0')
+    .setVersion(process.env.APP_VERSION || '1.0.0')
     .addTag('Recourses')
     // .addServer('https://')
     // .addServer('http://localhost:8080/')
