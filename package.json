@@ -126,5 +126,6 @@
     "@types/express": "4.17.21",
     "@types/express-serve-static-core": "4.19.0",
     "@types/serve-static": "1.15.5"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }
