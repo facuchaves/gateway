@@ -22,7 +22,6 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
-
       - name: Install dependencies
         run: yarn install --immutable
 
@@ -53,7 +52,6 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
-
       - name: Install dependencies
         run: yarn install --immutable
 
@@ -74,7 +72,7 @@ jobs:
         with:
           name: coverage
           path: coverage
-          
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
@@ -97,11 +95,18 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
-      - name: Install and Build
-        # Aquí es donde GitHub hace el trabajo pesado
+      - name: Build and Prune
         run: |
+          # 1. Instalamos todo para buildear
           yarn install --immutable
           yarn build
+          # 2. Eliminamos node_modules de desarrollo y dejamos solo producción
+          # En Yarn v3+, la forma correcta de limpiar para producción es:
+          yarn workspaces focus --production
+
+      - name: Prepare Artifact
+        # Comprimimos dist Y node_modules (que ya solo tiene producción)
+        run: tar -czf deploy_package.tar.gz dist/ node_modules/ package.json yarn.lock .yarnrc.yml .yarn/
 
       - name: Setup SSH
         run: |
@@ -110,30 +115,28 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Transfer Build to EC2
-        # Enviamos solo lo necesario para que la app corra
+      - name: Deploy to EC2
         run: |
-          scp -r dist package.json yarn.lock ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_PATH }}
+          scp deploy_package.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_PATH }}
 
-      - name: Finalize Deploy on EC2
-        run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-          "APP_VERSION=${GITHUB_SHA::7} NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} bash -s" << EOF
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "bash -s" << 'EOF'
             set -e
             cd ${{ secrets.APP_PATH }}
             
-            # Habilitar corepack en el servidor (solo una vez)
-            corepack enable
+            echo "--- Descomprimiendo paquete (Zero Install) ---"
+            # Limpieza rápida para no dejar basura de versiones previas
+            rm -rf dist node_modules
+            tar -xzf deploy_package.tar.gz
+            rm deploy_package.tar.gz
             
-            echo "--- Instalando solo dependencias de producción ---"
-            # Yarn instala solo lo necesario para RUNTIME, ahorrando mucha RAM
-            yarn install --production --immutable
-            
-            echo "--- Reiniciando con PM2 ---"
-            # El flag --update-env asegura que las nuevas variables se carguen
+            echo "--- Reiniciando Aplicación con PM2 ---"
+            # No corremos yarn install aquí. La EC2 no hace ningún esfuerzo.
+            APP_VERSION=${{ github.sha }} \
+            NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
             pm2 restart nest-api --update-env --node-args="-r newrelic --max-old-space-size=450" || \
+            APP_VERSION=${{ github.sha }} \
+            NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
             pm2 start dist/main.js --name nest-api --node-args="-r newrelic --max-old-space-size=450"
             
-            # Limpieza opcional de caché de yarn para recuperar espacio en disco
-            yarn cache clean
+            echo "--- Deploy finalizado con éxito ---"
           EOF
