@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { CacheInterceptor, INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import { INestApplication } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+import request from 'supertest';
 import { AppModule } from '../../src/app.module';
 import {
   ENTITY_MICROSERVICE_LOCAL_NAME,
