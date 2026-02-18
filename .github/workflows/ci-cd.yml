@@ -13,23 +13,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
       - name: Enable corepack
         run: corepack enable
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Run tests
         run: yarn test --coverage
 
       - name: Upload coverage artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage
@@ -40,16 +41,21 @@ jobs:
     needs: unit_and_integration
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
-          cache: yarn
-          cache-dependency-path: yarn.lock
+          node-version: 20
+          cache: 'yarn'
 
-      - run: corepack enable
-      - run: yarn install --frozen-lockfile
+
+      - name: Install dependencies
+        run: yarn install --immutable
 
       - name: Run e2e tests
         run: yarn test:e2e
@@ -68,7 +74,7 @@ jobs:
         with:
           name: coverage
           path: coverage
-
+          
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
@@ -82,10 +88,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set app version
-        shell: bash
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Install and Build
+        # Aquí es donde GitHub hace el trabajo pesado
         run: |
-          echo "APP_VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          yarn install --immutable
+          yarn build
 
       - name: Setup SSH
         run: |
@@ -94,32 +110,30 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to EC2
+      - name: Transfer Build to EC2
+        # Enviamos solo lo necesario para que la app corra
+        run: |
+          scp -r dist package.json yarn.lock ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_PATH }}
+
+      - name: Finalize Deploy on EC2
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-          "APP_VERSION=${{ env.APP_VERSION }} NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} bash -s" << EOF
-            set -e  # Detener el script si hay algún error
+          "APP_VERSION=${GITHUB_SHA::7} NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} bash -s" << EOF
+            set -e
             cd ${{ secrets.APP_PATH }}
             
-            echo "--- Exportando secrets ---"
-            export NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }}
-            echo "NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY"
-
-            echo "--- Bajando cambios de Git ---"
-            git pull origin master
+            # Habilitar corepack en el servidor (solo una vez)
+            corepack enable
             
-            echo "--- Instalando dependencias (Modo Ahorro RAM) ---"
-            NODE_OPTIONS="--max-old-space-size=512" npm install --no-audit --no-fund
+            echo "--- Instalando solo dependencias de producción ---"
+            # Yarn instala solo lo necesario para RUNTIME, ahorrando mucha RAM
+            yarn install --production --immutable
             
-            echo "--- Generando el Build ---"
-            NODE_OPTIONS="--max-old-space-size=512" npm run build
+            echo "--- Reiniciando con PM2 ---"
+            # El flag --update-env asegura que las nuevas variables se carguen
+            pm2 restart nest-api --update-env --node-args="-r newrelic --max-old-space-size=450" || \
+            pm2 start dist/main.js --name nest-api --node-args="-r newrelic --max-old-space-size=450"
             
-            echo "--- Reiniciando Aplicación con PM2 ---"
-            # Limitamos la RAM también en ejecución para evitar futuros cuelgues
-            APP_VERSION=$APP_VERSION pm2 restart nest-api --update-env --node-args="-r newrelic --max-old-space-size=450" || \
-            APP_VERSION=$APP_VERSION pm2 start dist/main.js --name nest-api --node-args="-r newrelic --max-old-space-size=450"
-            
-            echo "--- Deploy Finalizado con éxito ---"
+            # Limpieza opcional de caché de yarn para recuperar espacio en disco
+            yarn cache clean
           EOF
-
-#Fix for dont install devDependencies or build in another part

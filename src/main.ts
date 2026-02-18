@@ -4,20 +4,15 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Transport } from '@nestjs/microservices';
 import { SecuritySchemeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
-import * as session from 'express-session';
-import * as cookieParser from 'cookie-parser';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+
 import { Logger } from '@nestjs/common';
 const fs = require('fs');
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: true,
-    // httpsOptions: {
-    //   cert: fs.readFileSync('../server.cert'),
-    //   key: fs.readFileSync('../server.key')
-    // }
-  });
+  const app = await NestFactory.create(AppModule);
 
   app.connectMicroservice({
     transport: Transport.TCP,
@@ -29,7 +24,7 @@ async function bootstrap() {
     },
   });
 
-  await app.startAllMicroservicesAsync();
+  await app.startAllMicroservices();
 
   const config = new DocumentBuilder()
     .setTitle('CRUDX Example')

@@ -24,7 +24,6 @@ export class EntityDto {
     type: Number,
     minimum: 0,
     maximum: 100,
-    examples: [0, 50, 100],
     example: 67,
   })
   @IsInt()

@@ -6,7 +6,6 @@ export class FilterOutputDto {
     description: 'Min age filter',
     type: Number,
     minimum: 0,
-    examples: [18, 27, 53],
     example: 21,
   })
   @IsInt()
@@ -17,7 +16,6 @@ export class FilterOutputDto {
     description: 'Max age filter',
     type: Number,
     minimum: 0,
-    examples: [18, 27, 53],
     example: 71,
   })
   @IsInt()
