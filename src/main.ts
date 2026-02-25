@@ -7,24 +7,12 @@ import { SecuritySchemeObject } from '@nestjs/swagger/dist/interfaces/open-api-s
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 const fs = require('fs');
 declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  app.connectMicroservice({
-    transport: Transport.TCP,
-    options: {
-      retryAttempts: 5,
-      retryDelay: 3000,
-      host: process.env.LOCAL_MICROSERVICE_HOST,
-      port: parseInt(process.env.LOCAL_MICROSERVICE_POST),
-    },
-  });
-
-  await app.startAllMicroservices();
 
   const config = new DocumentBuilder()
     .setTitle('CRUDX Example')
@@ -56,7 +44,7 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
-
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useLogger(new Logger());
   const PORT = process.env.PORT || 8080;
 

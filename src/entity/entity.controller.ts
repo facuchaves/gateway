@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpException,
   Logger,
   Param,
@@ -24,6 +25,7 @@ import {
   ApiCookieAuth,
   ApiCreatedResponse,
   ApiHeader,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -32,7 +34,6 @@ import {
 } from '@nestjs/swagger';
 import { EntityService } from './entity.service';
 import { EntityDto } from './dtos/entity.dto';
-import { MessagePattern } from '@nestjs/microservices';
 import { FilterOutputDto } from './dtos/filter-output.dto';
 import { FilterPipe } from '../pipes/filter.pipe';
 import { FilterInputDto } from './dtos/filter-input.dto';
@@ -41,9 +42,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { LoggingInterceptor } from '../interceptors/logging.interceptor';
 import { Cookies } from '../decorators/cookie.decorator';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
-import { CreateGenericEntityResponseDto } from './dtos/create-generic-entity-response.dto';
-import { UpdateGenericEntityResponseDto } from './dtos/update-generic-entity-response.dto';
-import { DeleteGenericEntityResponseDto } from './dtos/delete-generic-entity-response.dto';
+import { CreateEntityRequestDto } from './dtos/create-entity-request.dto';
 
 @ApiTags('resource')
 @Controller('api/resource')
@@ -73,23 +72,6 @@ export class EntityController {
     return this.service.getAllEntities();
   }
 
-  @Get('local')
-  @ApiOkResponse({
-    description: 'La lista fue consultada con exito.',
-    type: EntityDto,
-    isArray: true,
-  })
-  @ApiOperation({
-    summary: 'Devuelve una lista de entidades',
-    description:
-      'Devuelve una lista de todos las entidades. Si no hay entidades devuelve una lista vacia',
-  })
-  @CacheKey('custom_key')
-  @CacheTTL(20)
-  async getAllEntitiesLocal(): Promise<EntityDto[]> {
-    return this.service.getAllEntitiesLocal();
-  }
-
   @Get(':resourceId')
   @ApiParam({
     name: 'resourceId',
@@ -115,7 +97,7 @@ export class EntityController {
 
   @UsePipes(new ValidationPipe({ transform: true }))
   @Post()
-  @ApiCreatedResponse({ type: CreateGenericEntityResponseDto })
+  @ApiCreatedResponse({ type: EntityDto })
   @ApiBadRequestResponse({
     description: 'Si un parametro no cumple con la especificacion.',
   })
@@ -124,9 +106,9 @@ export class EntityController {
     description: 'Crea una entidad.',
   })
   async createEntity(
-    @Body() entityDto: EntityDto,
-  ): Promise<CreateGenericEntityResponseDto> {
-    return this.service.createNewEntity(entityDto);
+    @Body() entityDto: CreateEntityRequestDto,
+  ): Promise<EntityDto> {
+    return this.service.createEntity(entityDto);
   }
 
   @Put(':resourceId')
@@ -135,7 +117,7 @@ export class EntityController {
     required: true,
     description: 'Entity id to update',
   })
-  @ApiOkResponse({ type: UpdateGenericEntityResponseDto })
+  @ApiOkResponse({ type: EntityDto })
   @ApiBadRequestResponse({
     description: 'Si el user con ese id no existe.',
   })
@@ -143,11 +125,11 @@ export class EntityController {
     summary: 'Edicion de entidad',
     description: 'Edicion una entidad.',
   })
-  async editEntity(
+  async updateEntity(
     @Param('resourceId', ParseIntPipe) entityId: number,
     @Body() entityDto: EntityDto,
-  ): Promise<UpdateGenericEntityResponseDto> {
-    return this.service.editEntityById(entityId, entityDto);
+  ): Promise<EntityDto> {
+    return this.service.updateEntityById(entityId, entityDto);
   }
 
   @Delete(':resourceId')
@@ -156,23 +138,18 @@ export class EntityController {
     required: true,
     description: 'Entity id to delete',
   })
-  @ApiOkResponse({ type: DeleteGenericEntityResponseDto })
-  @ApiBadRequestResponse({
-    description: 'Si no existe entidad con ese id no existe.',
+  @ApiNoContentResponse({
+    description: 'No es necesario devolver informacion.',
   })
   @ApiOperation({
     summary: 'Eliminacion de entidad',
     description: 'Elimina un entidad.',
   })
+  @HttpCode(204)
   async deleteEntity(
     @Param('resourceId', ParseIntPipe) entityId: number,
-  ): Promise<DeleteGenericEntityResponseDto> {
+  ): Promise<void> {
     return this.service.deleteEntityById(entityId);
-  }
-
-  @MessagePattern({ cmd: 'get_all_entities' })
-  getAllEntitiesLocalMicroService(): Promise<EntityDto[]> {
-    return this.service.getAllEntities();
   }
 
   @UsePipes(new ValidationPipe({ transform: false }))

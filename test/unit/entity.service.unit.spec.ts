@@ -1,95 +1,75 @@
-import { ClientProxy } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
-import { EntityDto } from '../../src/entity/dtos/entity.dto';
 import { EntityService } from '../../src/entity/entity.service';
+import { GenericEntityRepository } from '../../src/entity/entity.repository';
 
-describe('Entity service (Unit)', () => {
-  const clientProxy: ClientProxy = {
-    send: (_pattern: any, _data: any) => new Observable(),
-  } as ClientProxy;
-  const clientProxyLocal: ClientProxy = {
-    send: (_pattern: any, _data: any) => new Observable(),
-  } as ClientProxy;
-  const entityService: EntityService = new EntityService(
-    clientProxy,
-    clientProxyLocal,
-  );
+describe('EntityService (unit)', () => {
+  let service: EntityService;
+  let repo: jest.Mocked<GenericEntityRepository>;
 
-  afterEach(() => {
+  beforeEach(() => {
+    repo = {
+      find: jest.fn(),
+      findOne: jest.fn(),
+      create: jest.fn(),
+      preload: jest.fn(),
+      save: jest.fn(),
+      delete: jest.fn(),
+    } as unknown as jest.Mocked<GenericEntityRepository>;
+
+    service = new EntityService(repo);
     jest.clearAllMocks();
   });
 
-  describe('Happy paths', () => {
-    it('should return all entities', async () => {
-      const clientProxySpies = jest.spyOn(clientProxy, 'send');
+  describe('getAllEntities', () => {
+    it('should return all entities from repository', async () => {
+      repo.find.mockResolvedValue([{ id: 1 }, { id: 2 }] as any);
 
-      entityService.getAllEntities();
+      const result = await service.getAllEntities();
 
-      expect(clientProxySpies).toBeCalledTimes(1);
-      expect(clientProxySpies).toBeCalledWith({ cmd: 'get_all_entities' }, {});
+      expect(repo.find).toHaveBeenCalled();
+      expect(result).toEqual([{ id: 1 }, { id: 2 }]);
+    });
+  });
+
+  describe('getEntityById', () => {
+    it('should return entity when it exists', async () => {
+      repo.findOne.mockResolvedValue({ id: 2, name: 'B' } as any);
+
+      const result = await service.getEntityById(2);
+
+      expect(result).toEqual({ id: 2, name: 'B' });
     });
 
-    it('should return all entities local', async () => {
-      const clientProxySpies = jest.spyOn(clientProxyLocal, 'send');
+    it('should throw an exception when entity does not exist', async () => {
+      repo.findOne.mockResolvedValue(undefined as any);
 
-      entityService.getAllEntitiesLocal();
-
-      expect(clientProxySpies).toBeCalledTimes(1);
-      expect(clientProxySpies).toBeCalledWith({ cmd: 'get_all_entities' }, {});
+      await expect(service.getEntityById(99)).rejects.toThrow();
     });
+  });
 
-    it('should return specific entities', async () => {
-      const idToFind = 1;
+  describe('createNewEntity', () => {
+    it('should create entity and return it', async () => {
+      const dto = { name: 'Test', score: 5 };
 
-      const clientProxySpies = jest.spyOn(clientProxy, 'send');
+      repo.save.mockResolvedValue({ id: 10, ...dto });
 
-      entityService.getEntityById(idToFind);
+      const result = await service.createEntity(dto);
 
-      expect(clientProxySpies).toBeCalledTimes(1);
-      expect(clientProxySpies).toBeCalledWith(
-        { cmd: 'get_entity_by_id' },
-        idToFind,
-      );
+      expect(result).toEqual({ id: 10, ...dto });
     });
+  });
 
-    it('should create new entity', async () => {
-      const clientProxySpies = jest.spyOn(clientProxy, 'send');
+  describe('updateEntityById', () => {
+    it('should throw an exception when entity does not exist', async () => {
+      repo.preload.mockResolvedValue(undefined as any);
 
-      const entityToCreate: EntityDto = { name: 'Name', score: 50 };
-      entityService.createNewEntity(entityToCreate);
+      await expect(
+        service.updateEntityById(1, {
+          name: 'New',
+          score: 50,
+        }),
+      ).rejects.toThrow();
 
-      expect(clientProxySpies).toBeCalledTimes(1);
-      expect(clientProxySpies).toBeCalledWith(
-        { cmd: 'create_entity' },
-        entityToCreate,
-      );
-    });
-
-    it('should update entity', async () => {
-      const clientProxySpies = jest.spyOn(clientProxy, 'send');
-
-      const entityToUpdate: EntityDto = { name: 'Name', score: 50 };
-      const entityIdToUpdate = 1;
-      entityService.editEntityById(entityIdToUpdate, entityToUpdate);
-
-      expect(clientProxySpies).toBeCalledTimes(1);
-      expect(clientProxySpies).toBeCalledWith(
-        { cmd: 'edit_entity' },
-        { entityId: entityIdToUpdate, entityParam: entityToUpdate },
-      );
-    });
-
-    it('should delete entity', async () => {
-      const clientProxySpies = jest.spyOn(clientProxy, 'send');
-
-      const entityIdToDelete = 1;
-      entityService.deleteEntityById(entityIdToDelete);
-
-      expect(clientProxySpies).toBeCalledTimes(1);
-      expect(clientProxySpies).toBeCalledWith(
-        { cmd: 'delete_entity_by_id' },
-        entityIdToDelete,
-      );
+      expect(repo.save).not.toHaveBeenCalled();
     });
   });
 });
