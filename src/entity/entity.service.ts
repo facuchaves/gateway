@@ -1,74 +1,54 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { GenericEntityRepository } from './entity.repository';
+import { CreateEntityRequestDto } from './dtos/create-entity-request.dto';
 import { EntityDto } from './dtos/entity.dto';
-import {
-  ENTITY_MICROSERVICE_LOCAL_NAME,
-  ENTITY_MICROSERVICE_NAME,
-} from './entity.constans';
-import { EntityMicroserviceResponseDto } from './dtos/entity-microservice-response.dto';
-import { CreateGenericEntityMicroserviceResponseDto } from './dtos/create-generic-entity-microservice-response.dto';
-import { UpdateGenericEntityMicroserviceResponseDto } from './dtos/update-generic-entity-microservice-response.dto';
-import { DeleteGenericEntityMicroserviceResponseDto } from './dtos/delete-generic-entity-microservice-response.dto';
+import { EntityMapper } from './entity.mapper';
 
 @Injectable()
 export class EntityService {
   constructor(
-    @Inject(ENTITY_MICROSERVICE_NAME) private client: ClientProxy,
-    @Inject(ENTITY_MICROSERVICE_LOCAL_NAME) private localClient: ClientProxy,
+    private readonly genericEntityRepository: GenericEntityRepository,
   ) {}
 
-  async getAllEntitiesLocal(): Promise<EntityMicroserviceResponseDto[]> {
-    const pattern = { cmd: 'get_all_entities' };
-    return this.localClient
-      .send<EntityMicroserviceResponseDto[]>(pattern, {})
-      .toPromise();
+  async getAllEntities(): Promise<EntityDto[]> {
+    return EntityMapper.toDtoList(await this.genericEntityRepository.find());
   }
 
-  async getAllEntities(): Promise<EntityMicroserviceResponseDto[]> {
-    const pattern = { cmd: 'get_all_entities' };
-    return this.client
-      .send<EntityMicroserviceResponseDto[]>(pattern, {})
-      .toPromise();
+  async getEntityById(id: number): Promise<EntityDto> {
+    const entity = await this.genericEntityRepository.findOne(id);
+
+    if (!entity) {
+      throw new NotFoundException(`Entity with id ${id} not found`);
+    }
+
+    return EntityMapper.toDto(entity);
   }
 
-  async getEntityById(
-    entityIdToSearch: number,
-  ): Promise<EntityMicroserviceResponseDto> {
-    const pattern = { cmd: 'get_entity_by_id' };
-    return this.client
-      .send<EntityMicroserviceResponseDto>(pattern, entityIdToSearch)
-      .toPromise();
+  async createEntity(
+    createEntityRequestDto: CreateEntityRequestDto,
+  ): Promise<EntityDto> {
+    const entity = this.genericEntityRepository.create(createEntityRequestDto);
+    const savedEntity = await this.genericEntityRepository.save(entity);
+    return EntityMapper.toDto(savedEntity);
   }
 
-  createNewEntity(
-    entityDto: EntityDto,
-  ): Promise<CreateGenericEntityMicroserviceResponseDto> {
-    const pattern = { cmd: 'create_entity' };
-    return this.client
-      .send<CreateGenericEntityMicroserviceResponseDto>(pattern, entityDto)
-      .toPromise();
+  async updateEntityById(id: number, entityDto: EntityDto): Promise<EntityDto> {
+    const entityToEdit = this.genericEntityRepository.create(entityDto);
+
+    const entity = await this.genericEntityRepository.preload({
+      id,
+      ...entityToEdit,
+    });
+
+    if (!entity) {
+      throw new NotFoundException(`Entity with id ${id} not found`);
+    }
+
+    const editedEntity = await this.genericEntityRepository.save(entity);
+    return EntityMapper.toDto(editedEntity);
   }
 
-  editEntityById(
-    entityId: number,
-    entityDto: EntityDto,
-  ): Promise<UpdateGenericEntityMicroserviceResponseDto> {
-    const pattern = { cmd: 'edit_entity' };
-    const payload = { entityId: entityId, entityParam: entityDto };
-    return this.client
-      .send<UpdateGenericEntityMicroserviceResponseDto>(pattern, payload)
-      .toPromise();
-  }
-
-  deleteEntityById(
-    entityIdToDelete: number,
-  ): Promise<DeleteGenericEntityMicroserviceResponseDto> {
-    const pattern = { cmd: 'delete_entity_by_id' };
-    return this.client
-      .send<DeleteGenericEntityMicroserviceResponseDto>(
-        pattern,
-        entityIdToDelete,
-      )
-      .toPromise();
+  async deleteEntityById(id: number): Promise<void> {
+    await this.genericEntityRepository.delete(id);
   }
 }
