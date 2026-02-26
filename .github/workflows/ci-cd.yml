@@ -23,7 +23,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: yarn install
 
       - name: Run tests
         run: yarn test --coverage
@@ -53,7 +53,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: yarn install
 
       - name: Run e2e tests
         run: yarn test:e2e
@@ -98,7 +98,7 @@ jobs:
       - name: Build and Prune
         run: |
           # 1. Instalamos todo para buildear
-          yarn install --immutable
+          yarn install
           yarn build
           # 2. Eliminamos node_modules de desarrollo y dejamos solo producción
           # En Yarn v3+, la forma correcta de limpiar para producción es:
