@@ -2866,7 +2866,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^12.6.2":
+"better-sqlite3@npm:12.6.2":
   version: 12.6.2
   resolution: "better-sqlite3@npm:12.6.2"
   dependencies:
@@ -7293,7 +7293,7 @@ __metadata:
     "@types/supertest": "npm:^2.0.16"
     "@typescript-eslint/eslint-plugin": "npm:^6.7.0"
     "@typescript-eslint/parser": "npm:^6.7.0"
-    better-sqlite3: "npm:^12.6.2"
+    better-sqlite3: "npm:12.6.2"
     cache-manager: "npm:^5.2.3"
     cache-manager-redis-store: "npm:^3.0.1"
     class-transformer: "npm:^0.5.1"
