@@ -80,7 +80,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [unit_and_integration, e2e, quality]
+    needs: [test, quality]
     if: github.event_name == 'push'
     steps:
       - name: Checkout
@@ -95,6 +95,9 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh
+
       - name: Build and Prune
         run: |
           # 1. Instalamos todo para buildear
@@ -104,39 +107,26 @@ jobs:
           # En Yarn v3+, la forma correcta de limpiar para producción es:
           yarn workspaces focus --production
 
-      - name: Prepare Artifact
-        # Comprimimos dist Y node_modules (que ya solo tiene producción)
-        run: tar -czf deploy_package.tar.gz dist/ node_modules/ package.json yarn.lock .yarnrc.yml .yarn/
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
 
-      - name: Setup SSH
+      - name: Upload to S3
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          # Empaquetamos todo (incluyendo appspec.yml y scripts/)
+          zip -r deploy_package.zip dist/ node_modules/ package.json appspec.yml scripts/
+          aws s3 cp deploy_package.zip s3://microservice-bucket-2/deploy_package.zip
 
-      - name: Deploy to EC2
+      - name: Update Version in AWS
         run: |
-          scp deploy_package.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.APP_PATH }}
+          aws ssm put-parameter --name "/prod/microservice/APP_VERSION" --value "${{ github.sha }}" --type "String" --overwrite
 
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "bash -s" << 'EOF'
-            set -e
-            cd ${{ secrets.APP_PATH }}
-            
-            echo "--- Descomprimiendo paquete (Zero Install) ---"
-            # Limpieza rápida para no dejar basura de versiones previas
-            rm -rf dist node_modules
-            tar -xzf deploy_package.tar.gz
-            rm deploy_package.tar.gz
-            
-            echo "--- Reiniciando Aplicación con PM2 ---"
-            # No corremos yarn install aquí. La EC2 no hace ningún esfuerzo.
-            APP_VERSION=${{ github.sha }} \
-            NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
-            pm2 restart nest-api --update-env --node-args="-r newrelic --max-old-space-size=450" || \
-            APP_VERSION=${{ github.sha }} \
-            NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
-            pm2 start dist/main.js --name nest-api --node-args="-r newrelic --max-old-space-size=450"
-            
-            echo "--- Deploy finalizado con éxito ---"
-          EOF
+      - name: Create CodeDeploy Deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name microservice \
+            --deployment-group-name microservice-deployment-group \
+            --s3-location bucket=microservice-bucket-2,key=deploy_package.zip,bundleType=zip
