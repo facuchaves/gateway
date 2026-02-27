@@ -965,7 +965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/cache-manager@npm:^2.1.0":
+"@nestjs/cache-manager@npm:2.3.0":
   version: 2.3.0
   resolution: "@nestjs/cache-manager@npm:2.3.0"
   peerDependencies:
@@ -977,7 +977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/cli@npm:^10.0.0":
+"@nestjs/cli@npm:10.4.9":
   version: 10.4.9
   resolution: "@nestjs/cli@npm:10.4.9"
   dependencies:
@@ -1014,7 +1014,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^10.0.0":
+"@nestjs/common@npm:10.4.22":
   version: 10.4.22
   resolution: "@nestjs/common@npm:10.4.22"
   dependencies:
@@ -1036,7 +1036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/config@npm:^3.0.0":
+"@nestjs/config@npm:3.3.0":
   version: 3.3.0
   resolution: "@nestjs/config@npm:3.3.0"
   dependencies:
@@ -1050,7 +1050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/core@npm:^10.0.0":
+"@nestjs/core@npm:10.4.22":
   version: 10.4.22
   resolution: "@nestjs/core@npm:10.4.22"
   dependencies:
@@ -1095,7 +1095,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/microservices@npm:^10.0.0":
+"@nestjs/microservices@npm:10.4.22":
   version: 10.4.22
   resolution: "@nestjs/microservices@npm:10.4.22"
   dependencies:
@@ -1138,7 +1138,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/platform-express@npm:^10.0.0":
+"@nestjs/platform-express@npm:10.4.22":
   version: 10.4.22
   resolution: "@nestjs/platform-express@npm:10.4.22"
   dependencies:
@@ -1154,7 +1154,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/schematics@npm:^10.0.0, @nestjs/schematics@npm:^10.0.1":
+"@nestjs/schematics@npm:10.2.3, @nestjs/schematics@npm:^10.0.1":
   version: 10.2.3
   resolution: "@nestjs/schematics@npm:10.2.3"
   dependencies:
@@ -1169,7 +1169,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/swagger@npm:^7.0.0":
+"@nestjs/swagger@npm:7.4.2":
   version: 7.4.2
   resolution: "@nestjs/swagger@npm:7.4.2"
   dependencies:
@@ -1197,7 +1197,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:^10.0.0":
+"@nestjs/testing@npm:10.4.22":
   version: 10.4.22
   resolution: "@nestjs/testing@npm:10.4.22"
   dependencies:
@@ -1216,7 +1216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/typeorm@npm:^10.0.0":
+"@nestjs/typeorm@npm:10.0.2":
   version: 10.0.2
   resolution: "@nestjs/typeorm@npm:10.0.2"
   dependencies:
@@ -1872,7 +1872,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-parser@npm:^1.4.4":
+"@types/cookie-parser@npm:1.4.10":
   version: 1.4.10
   resolution: "@types/cookie-parser@npm:1.4.10"
   peerDependencies:
@@ -1927,7 +1927,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-session@npm:^1.17.8":
+"@types/express-session@npm:1.18.2":
   version: 1.18.2
   resolution: "@types/express-session@npm:1.18.2"
   dependencies:
@@ -1989,7 +1989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^29.5.5":
+"@types/jest@npm:29.5.14":
   version: 29.5.14
   resolution: "@types/jest@npm:29.5.14"
   dependencies:
@@ -2036,7 +2036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.8.0":
+"@types/node@npm:20.19.32":
   version: 20.19.32
   resolution: "@types/node@npm:20.19.32"
   dependencies:
@@ -2105,7 +2105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/supertest@npm:^2.0.16":
+"@types/supertest@npm:2.0.16":
   version: 2.0.16
   resolution: "@types/supertest@npm:2.0.16"
   dependencies:
@@ -2144,7 +2144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^6.7.0":
+"@typescript-eslint/eslint-plugin@npm:6.21.0":
   version: 6.21.0
   resolution: "@typescript-eslint/eslint-plugin@npm:6.21.0"
   dependencies:
@@ -2169,7 +2169,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^6.7.0":
+"@typescript-eslint/parser@npm:6.21.0":
   version: 6.21.0
   resolution: "@typescript-eslint/parser@npm:6.21.0"
   dependencies:
@@ -3054,7 +3054,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cache-manager-redis-store@npm:^3.0.1":
+"cache-manager-redis-store@npm:3.0.1":
   version: 3.0.1
   resolution: "cache-manager-redis-store@npm:3.0.1"
   dependencies:
@@ -3063,7 +3063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cache-manager@npm:^5.2.3":
+"cache-manager@npm:5.7.6":
   version: 5.7.6
   resolution: "cache-manager@npm:5.7.6"
   dependencies:
@@ -3227,14 +3227,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-transformer@npm:^0.5.1":
+"class-transformer@npm:0.5.1":
   version: 0.5.1
   resolution: "class-transformer@npm:0.5.1"
   checksum: 10/750327e3e9a5cf233c5234252f4caf6b06c437bf68a24acbdcfb06c8e0bfff7aa97c30428184813e38e08111b42871f20c5cf669ea4490f8ae837c09f08b31e7
   languageName: node
   linkType: hard
 
-"class-validator@npm:^0.14.0":
+"class-validator@npm:0.14.3":
   version: 0.14.3
   resolution: "class-validator@npm:0.14.3"
   dependencies:
@@ -3444,7 +3444,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-parser@npm:^1.4.6":
+"cookie-parser@npm:1.4.7":
   version: 1.4.7
   resolution: "cookie-parser@npm:1.4.7"
   dependencies:
@@ -3958,7 +3958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^9.0.0":
+"eslint-config-prettier@npm:9.1.2":
   version: 9.1.2
   resolution: "eslint-config-prettier@npm:9.1.2"
   peerDependencies:
@@ -3969,7 +3969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^5.0.0":
+"eslint-plugin-prettier@npm:5.5.5":
   version: 5.5.5
   resolution: "eslint-plugin-prettier@npm:5.5.5"
   dependencies:
@@ -4016,7 +4016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.50.0":
+"eslint@npm:8.57.1":
   version: 8.57.1
   resolution: "eslint@npm:8.57.1"
   dependencies:
@@ -4196,7 +4196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-session@npm:^1.17.3":
+"express-session@npm:1.19.0":
   version: 1.19.0
   resolution: "express-session@npm:1.19.0"
   dependencies:
@@ -5600,7 +5600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-junit@npm:^16.0.0":
+"jest-junit@npm:16.0.0":
   version: 16.0.0
   resolution: "jest-junit@npm:16.0.0"
   dependencies:
@@ -5795,7 +5795,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-sonar-reporter@npm:2.0.0, jest-sonar-reporter@npm:^2.0.0":
+"jest-sonar-reporter@npm:2.0.0":
   version: 2.0.0
   resolution: "jest-sonar-reporter@npm:2.0.0"
   dependencies:
@@ -5871,7 +5871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^29.7.0":
+"jest@npm:29.7.0":
   version: 29.7.0
   resolution: "jest@npm:29.7.0"
   dependencies:
@@ -6615,7 +6615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mysql2@npm:^3.6.0":
+"mysql2@npm:3.16.3":
   version: 3.16.3
   resolution: "mysql2@npm:3.16.3"
   dependencies:
@@ -6685,7 +6685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"newrelic@npm:^13.12.0":
+"newrelic@npm:13.12.0":
   version: 13.12.0
   resolution: "newrelic@npm:13.12.0"
   dependencies:
@@ -6821,7 +6821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemon@npm:^3.0.1":
+"nodemon@npm:3.1.11":
   version: 3.1.11
   resolution: "nodemon@npm:3.1.11"
   dependencies:
@@ -7229,7 +7229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.0.3":
+"prettier@npm:3.8.1":
   version: 3.8.1
   resolution: "prettier@npm:3.8.1"
   bin:
@@ -7274,57 +7274,57 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "project-name@workspace:."
   dependencies:
-    "@nestjs/cache-manager": "npm:^2.1.0"
-    "@nestjs/cli": "npm:^10.0.0"
-    "@nestjs/common": "npm:^10.0.0"
-    "@nestjs/config": "npm:^3.0.0"
-    "@nestjs/core": "npm:^10.0.0"
-    "@nestjs/microservices": "npm:^10.0.0"
-    "@nestjs/platform-express": "npm:^10.0.0"
-    "@nestjs/schematics": "npm:^10.0.0"
-    "@nestjs/swagger": "npm:^7.0.0"
-    "@nestjs/testing": "npm:^10.0.0"
-    "@nestjs/typeorm": "npm:^10.0.0"
-    "@types/cookie-parser": "npm:^1.4.4"
-    "@types/express": "npm:^4.17.21"
-    "@types/express-session": "npm:^1.17.8"
-    "@types/jest": "npm:^29.5.5"
-    "@types/node": "npm:^20.8.0"
-    "@types/supertest": "npm:^2.0.16"
-    "@typescript-eslint/eslint-plugin": "npm:^6.7.0"
-    "@typescript-eslint/parser": "npm:^6.7.0"
+    "@nestjs/cache-manager": "npm:2.3.0"
+    "@nestjs/cli": "npm:10.4.9"
+    "@nestjs/common": "npm:10.4.22"
+    "@nestjs/config": "npm:3.3.0"
+    "@nestjs/core": "npm:10.4.22"
+    "@nestjs/microservices": "npm:10.4.22"
+    "@nestjs/platform-express": "npm:10.4.22"
+    "@nestjs/schematics": "npm:10.2.3"
+    "@nestjs/swagger": "npm:7.4.2"
+    "@nestjs/testing": "npm:10.4.22"
+    "@nestjs/typeorm": "npm:10.0.2"
+    "@types/cookie-parser": "npm:1.4.10"
+    "@types/express": "npm:4.17.21"
+    "@types/express-session": "npm:1.18.2"
+    "@types/jest": "npm:29.5.14"
+    "@types/node": "npm:20.19.32"
+    "@types/supertest": "npm:2.0.16"
+    "@typescript-eslint/eslint-plugin": "npm:6.21.0"
+    "@typescript-eslint/parser": "npm:6.21.0"
     better-sqlite3: "npm:12.6.2"
-    cache-manager: "npm:^5.2.3"
-    cache-manager-redis-store: "npm:^3.0.1"
-    class-transformer: "npm:^0.5.1"
-    class-validator: "npm:^0.14.0"
-    cookie-parser: "npm:^1.4.6"
-    eslint: "npm:^8.50.0"
-    eslint-config-prettier: "npm:^9.0.0"
-    eslint-plugin-prettier: "npm:^5.0.0"
-    express-session: "npm:^1.17.3"
-    jest: "npm:^29.7.0"
-    jest-junit: "npm:^16.0.0"
-    jest-sonar-reporter: "npm:^2.0.0"
-    mysql2: "npm:^3.6.0"
-    newrelic: "npm:^13.12.0"
-    nodemon: "npm:^3.0.1"
-    prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
-    rimraf: "npm:^3.0.2"
-    run-script-webpack-plugin: "npm:^0.2.0"
-    rxjs: "npm:^7.8.1"
-    sonarqube-scanner: "npm:^3.1.0"
-    supertest: "npm:^6.3.3"
-    swagger-ui-express: "npm:^5.0.0"
-    ts-jest: "npm:^29.1.1"
-    ts-loader: "npm:^9.4.4"
-    ts-node: "npm:^10.9.1"
-    tsconfig-paths: "npm:^4.2.0"
-    typeorm: "npm:^0.3.17"
-    typescript: "npm:^5.2.2"
-    webpack: "npm:^5.88.2"
-    webpack-node-externals: "npm:^3.0.0"
+    cache-manager: "npm:5.7.6"
+    cache-manager-redis-store: "npm:3.0.1"
+    class-transformer: "npm:0.5.1"
+    class-validator: "npm:0.14.3"
+    cookie-parser: "npm:1.4.7"
+    eslint: "npm:8.57.1"
+    eslint-config-prettier: "npm:9.1.2"
+    eslint-plugin-prettier: "npm:5.5.5"
+    express-session: "npm:1.19.0"
+    jest: "npm:29.7.0"
+    jest-junit: "npm:16.0.0"
+    jest-sonar-reporter: "npm:2.0.0"
+    mysql2: "npm:3.16.3"
+    newrelic: "npm:13.12.0"
+    nodemon: "npm:3.1.11"
+    prettier: "npm:3.8.1"
+    reflect-metadata: "npm:0.1.14"
+    rimraf: "npm:3.0.2"
+    run-script-webpack-plugin: "npm:0.2.3"
+    rxjs: "npm:7.8.1"
+    sonarqube-scanner: "npm:3.5.0"
+    supertest: "npm:6.3.4"
+    swagger-ui-express: "npm:5.0.1"
+    ts-jest: "npm:29.4.6"
+    ts-loader: "npm:9.5.4"
+    ts-node: "npm:10.9.2"
+    tsconfig-paths: "npm:4.2.0"
+    typeorm: "npm:0.3.28"
+    typescript: "npm:5.9.3"
+    webpack: "npm:5.105.2"
+    webpack-node-externals: "npm:3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7522,7 +7522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:^0.1.13":
+"reflect-metadata@npm:0.1.14":
   version: 0.1.14
   resolution: "reflect-metadata@npm:0.1.14"
   checksum: 10/fcab9c17ec3b9fea0e2f748c2129aceb57c24af6d8d13842b8a77c8c79dde727d7456ce293e76e8d7b267d1dbf93eea4c5b3c9101299a789a075824f2e40f1ee
@@ -7662,7 +7662,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^3.0.2":
+"rimraf@npm:3.0.2, rimraf@npm:^3.0.2":
   version: 3.0.2
   resolution: "rimraf@npm:3.0.2"
   dependencies:
@@ -7703,7 +7703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"run-script-webpack-plugin@npm:^0.2.0":
+"run-script-webpack-plugin@npm:0.2.3":
   version: 0.2.3
   resolution: "run-script-webpack-plugin@npm:0.2.3"
   checksum: 10/c313d0c8be5037c74193b55393055beccca387aca6fc773b3c0cea124a51dacbd41a091fa1195da634ec199cf0e02ff3fdead8ac061aa8f46d76eecaa32d7552
@@ -8027,7 +8027,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sonarqube-scanner@npm:^3.1.0":
+"sonarqube-scanner@npm:3.5.0":
   version: 3.5.0
   resolution: "sonarqube-scanner@npm:3.5.0"
   dependencies:
@@ -8278,7 +8278,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supertest@npm:^6.3.3":
+"supertest@npm:6.3.4":
   version: 6.3.4
   resolution: "supertest@npm:6.3.4"
   dependencies:
@@ -8338,7 +8338,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui-express@npm:^5.0.0":
+"swagger-ui-express@npm:5.0.1":
   version: 5.0.1
   resolution: "swagger-ui-express@npm:5.0.1"
   dependencies:
@@ -8576,7 +8576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.1.1":
+"ts-jest@npm:29.4.6":
   version: 29.4.6
   resolution: "ts-jest@npm:29.4.6"
   dependencies:
@@ -8616,7 +8616,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^9.4.4":
+"ts-loader@npm:9.5.4":
   version: 9.5.4
   resolution: "ts-loader@npm:9.5.4"
   dependencies:
@@ -8632,7 +8632,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.9.1":
+"ts-node@npm:10.9.2":
   version: 10.9.2
   resolution: "ts-node@npm:10.9.2"
   dependencies:
@@ -8682,7 +8682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfig-paths@npm:4.2.0, tsconfig-paths@npm:^4.1.2, tsconfig-paths@npm:^4.2.0":
+"tsconfig-paths@npm:4.2.0, tsconfig-paths@npm:^4.1.2":
   version: 4.2.0
   resolution: "tsconfig-paths@npm:4.2.0"
   dependencies:
@@ -8774,7 +8774,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.17":
+"typeorm@npm:0.3.28":
   version: 0.3.28
   resolution: "typeorm@npm:0.3.28"
   dependencies:
@@ -8861,7 +8861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.2.2":
+"typescript@npm:5.9.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -8881,7 +8881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
@@ -9141,7 +9141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-node-externals@npm:3.0.0, webpack-node-externals@npm:^3.0.0":
+"webpack-node-externals@npm:3.0.0":
   version: 3.0.0
   resolution: "webpack-node-externals@npm:3.0.0"
   checksum: 10/1a08102f73be2d6e787d16cf677f98c413076f35f379d64a4c83aa83769099b38091a4592953fac5b2eb0c7e3eb1977f6b901ef2cba531d458e32665314b8025
@@ -9152,6 +9152,44 @@ __metadata:
   version: 3.3.3
   resolution: "webpack-sources@npm:3.3.3"
   checksum: 10/ec5d72607e8068467370abccbfff855c596c098baedbe9d198a557ccf198e8546a322836a6f74241492576adba06100286592993a62b63196832cdb53c8bae91
+  languageName: node
+  linkType: hard
+
+"webpack@npm:5.105.2":
+  version: 5.105.2
+  resolution: "webpack@npm:5.105.2"
+  dependencies:
+    "@types/eslint-scope": "npm:^3.7.7"
+    "@types/estree": "npm:^1.0.8"
+    "@types/json-schema": "npm:^7.0.15"
+    "@webassemblyjs/ast": "npm:^1.14.1"
+    "@webassemblyjs/wasm-edit": "npm:^1.14.1"
+    "@webassemblyjs/wasm-parser": "npm:^1.14.1"
+    acorn: "npm:^8.15.0"
+    acorn-import-phases: "npm:^1.0.3"
+    browserslist: "npm:^4.28.1"
+    chrome-trace-event: "npm:^1.0.2"
+    enhanced-resolve: "npm:^5.19.0"
+    es-module-lexer: "npm:^2.0.0"
+    eslint-scope: "npm:5.1.1"
+    events: "npm:^3.2.0"
+    glob-to-regexp: "npm:^0.4.1"
+    graceful-fs: "npm:^4.2.11"
+    json-parse-even-better-errors: "npm:^2.3.1"
+    loader-runner: "npm:^4.3.1"
+    mime-types: "npm:^2.1.27"
+    neo-async: "npm:^2.6.2"
+    schema-utils: "npm:^4.3.3"
+    tapable: "npm:^2.3.0"
+    terser-webpack-plugin: "npm:^5.3.16"
+    watchpack: "npm:^2.5.1"
+    webpack-sources: "npm:^3.3.3"
+  peerDependenciesMeta:
+    webpack-cli:
+      optional: true
+  bin:
+    webpack: bin/webpack.js
+  checksum: 10/77cf6f13e55cae2fafae015cc4a0b341b096c284877244ef4b46b4de1884dcf4e8d1a166a91f0a7cb6db41e9de2d0facb5caf518cbd4cd7ba963c59c07ff0a5a
   languageName: node
   linkType: hard
 
@@ -9188,44 +9226,6 @@ __metadata:
   bin:
     webpack: bin/webpack.js
   checksum: 10/665bd3b8c84b20f0b1f250159865e4d3e9b76c682030313d49124d5f8e96357ccdcc799dd9fe0ebf010fdb33dbc59d9863d79676a308e868e360ac98f7c09987
-  languageName: node
-  linkType: hard
-
-"webpack@npm:^5.88.2":
-  version: 5.105.0
-  resolution: "webpack@npm:5.105.0"
-  dependencies:
-    "@types/eslint-scope": "npm:^3.7.7"
-    "@types/estree": "npm:^1.0.8"
-    "@types/json-schema": "npm:^7.0.15"
-    "@webassemblyjs/ast": "npm:^1.14.1"
-    "@webassemblyjs/wasm-edit": "npm:^1.14.1"
-    "@webassemblyjs/wasm-parser": "npm:^1.14.1"
-    acorn: "npm:^8.15.0"
-    acorn-import-phases: "npm:^1.0.3"
-    browserslist: "npm:^4.28.1"
-    chrome-trace-event: "npm:^1.0.2"
-    enhanced-resolve: "npm:^5.19.0"
-    es-module-lexer: "npm:^2.0.0"
-    eslint-scope: "npm:5.1.1"
-    events: "npm:^3.2.0"
-    glob-to-regexp: "npm:^0.4.1"
-    graceful-fs: "npm:^4.2.11"
-    json-parse-even-better-errors: "npm:^2.3.1"
-    loader-runner: "npm:^4.3.1"
-    mime-types: "npm:^2.1.27"
-    neo-async: "npm:^2.6.2"
-    schema-utils: "npm:^4.3.3"
-    tapable: "npm:^2.3.0"
-    terser-webpack-plugin: "npm:^5.3.16"
-    watchpack: "npm:^2.5.1"
-    webpack-sources: "npm:^3.3.3"
-  peerDependenciesMeta:
-    webpack-cli:
-      optional: true
-  bin:
-    webpack: bin/webpack.js
-  checksum: 10/95e0a0f04fc324e0e3b378a81d111b1739579cda7224cbf904f894e8c4f3a8edce35a26bc06d2e6d558b335e6e0315f50a62fb1bef410053b965a5985fe38bd8
   languageName: node
   linkType: hard
 
