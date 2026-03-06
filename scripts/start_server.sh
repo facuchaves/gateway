@@ -3,6 +3,7 @@ cd /var/www/microservice
 
 # Traer variables de AWS
 export NEW_RELIC_LICENSE_KEY=$(aws ssm get-parameter --name "/prod/microservice/NEW_RELIC_LICENSE_KEY" --with-decryption --query "Parameter.Value" --output text)
+export NEW_RELIC_APP_NAME=$(aws ssm get-parameter --name "/prod/microservice/NEW_RELIC_APP_NAME" --query "Parameter.Value" --output text)
 export APP_VERSION=$(aws ssm get-parameter --name "/prod/microservice/APP_VERSION" --query "Parameter.Value" --output text)
 
 # Reiniciar o empezar
