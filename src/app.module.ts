@@ -2,6 +2,7 @@ import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { EntityModule } from './entity/entity.module';
 import { UserMiddleware } from './middlewares/user.middleware';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GenericEntity } from './entity/entities/generic-entity.entity';
@@ -38,6 +39,7 @@ const isTest = process.env.NODE_ENV === 'test';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
     consumer.apply(UserMiddleware).forRoutes('/');
   }
 }

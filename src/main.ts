@@ -11,8 +11,14 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 const fs = require('fs');
 declare const module: any;
 
+import { WinstonModule } from 'nest-winston';
+import { winstonConfig } from './logger/logger.config';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+  app.useLogger(WinstonModule.createLogger(winstonConfig));
 
   const config = new DocumentBuilder()
     .setTitle('CRUDX Example')
@@ -45,12 +51,12 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  app.useLogger(new Logger());
+  
   const PORT = process.env.PORT || 8080;
 
   await app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}...`);
-    console.log(`Service version: ${process.env.APP_VERSION || 'v1.0.0'}`);
+    Logger.log(`Server listening on port ${PORT}...`, 'Bootstrap');
+    Logger.log(`Service version: ${process.env.APP_VERSION || 'v1.0.0'}`, 'Bootstrap');
   });
 
   if (module.hot) {
