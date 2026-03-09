@@ -53,6 +53,8 @@ export default registerAs('ssm', async () => {
       getSsmParameter(client, `${paramPrefix}DDBB_DATABASE`),
     ]);
 
+  logger.log(dbType, dbHost, dbUsername, dbPassword, dbDatabase);
+
   return {
     DDBB_TYPE: dbType,
     DDBB_HOST: dbHost,
