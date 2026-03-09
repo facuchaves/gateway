@@ -48,7 +48,7 @@ export default registerAs('ssm', async () => {
     await Promise.all([
       getSsmParameter(client, `${paramPrefix}DDBB_TYPE`),
       getSsmParameter(client, `${paramPrefix}DDBB_HOST`),
-      getSsmParameter(client, `${paramPrefix}DDBB_USERNAME`),
+      getSsmParameter(client, `${paramPrefix}DDBB_USERNAME`, true),
       getSsmParameter(client, `${paramPrefix}DDBB_PASSWORD`, true),
       getSsmParameter(client, `${paramPrefix}DDBB_DATABASE`),
     ]);
