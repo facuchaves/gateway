@@ -7,4 +7,4 @@ export NEW_RELIC_APP_NAME=$(aws ssm get-parameter --name "/prod/microservice/NEW
 export APP_VERSION=$(aws ssm get-parameter --name "/prod/microservice/APP_VERSION" --query "Parameter.Value" --output text)
 
 # Reiniciar o empezar
-pm2 restart microservice --update-env || pm2 start dist/main.js --name microservice --node-args="-r newrelic --max-old-space-size=450"
+NODE_ENV=prod pm2 restart microservice --update-env || NODE_ENV=prod pm2 start dist/main.js --name microservice --node-args="-r newrelic --max-old-space-size=450"

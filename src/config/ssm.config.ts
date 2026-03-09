@@ -28,7 +28,9 @@ export default registerAs('ssm', async () => {
 
   logger.log('Fetching configuration from AWS SSM...');
   
-  const client = new SSMClient(); // Region is determined by the environment natively on AWS
+  const client = new SSMClient({
+  region: process.env.AWS_REGION ?? process.env.AWS_DEFAULT_REGION ?? 'us-east-2',
+});
   
   const paramPrefix = '/prod/microservice/';
   
