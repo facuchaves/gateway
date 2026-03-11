@@ -3,10 +3,11 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { EntityModule } from './entity/entity.module';
 import { UserMiddleware } from './middlewares/user.middleware';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GenericEntity } from './entity/entities/generic-entity.entity';
-import ssmConfig from './config/ssm.config';
+import { SSMService } from './config/ssm.service';
+import { SSMModule } from './config/ssm.module';
 
 const isTest = process.env.NODE_ENV === 'test';
 
@@ -14,15 +15,11 @@ const isTest = process.env.NODE_ENV === 'test';
   imports: [
     EntityModule,
     CacheModule.register(),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [ssmConfig],
-    }),
-
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
+      imports: [SSMModule],
+      inject: [SSMService],
+      useFactory: async (ssmService: SSMService) => {
         if (isTest) {
           return {
             type: 'better-sqlite3',
@@ -33,12 +30,24 @@ const isTest = process.env.NODE_ENV === 'test';
           };
         }
 
+        const paramPrefix = '/prod/microservice/';
+
+        const params = await ssmService.getParams([
+          `${paramPrefix}DDBB_TYPE`,
+          `${paramPrefix}DDBB_HOST`,
+          `${paramPrefix}DDBB_USERNAME`,
+          `${paramPrefix}DDBB_PASSWORD`,
+          `${paramPrefix}DDBB_DATABASE`,
+        ]);
+
+        console.log(params);
+
         return {
           type: 'mysql',
-          host: configService.get<string>('ssm.DDBB_HOST') || process.env.DDBB_HOST,
-          username: configService.get<string>('ssm.DDBB_USERNAME') || process.env.DDBB_USERNAME,
-          password: configService.get<string>('ssm.DDBB_PASSWORD') || process.env.DDBB_PASSWORD,
-          database: configService.get<string>('ssm.DDBB_DATABASE') || process.env.DDBB_DATABASE,
+          host: params.DDBB_HOST, //|| process.env.DDBB_HOST,
+          username: params.DDBB_USERNAME, // || process.env.DDBB_USERNAME,
+          password: params.DDBB_PASSWORD, // || process.env.DDBB_PASSWORD,
+          database: params.DDBB_DATABASE, //|| process.env.DDBB_DATABASE,
           entities: [GenericEntity],
           synchronize: true,
         };
